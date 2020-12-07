@@ -5,13 +5,29 @@ preciseQuot lhs rhs =
     then undefined
     else lhs `quot` rhs
 
-frontBot2id :: String -> (Int, Int)
-frontBot2id = foldr go (0, 128) . reverse
+bin2id :: String -> (Int, Int)
+bin2id str = frontBack2id $ takeWhile isFrontBack str
+
+frontBot2id :: String -> Int
+frontBot2id str =
+  case binPart 'F' 'B' 0 128 str of
+    (x, y) | x == y -> x
+    _ -> undefined
+
+leftRight2id :: String -> (Int, Int)
+leftRight2id str =
+  case binPart 'L' 'R' 0 undefined str of
+    (x, y) | x == y -> x
+    _ -> undefined
+
+
+binPart:: a -> a -> Int -> Int -> [a] -> (Int, Int)
+binPart lowSym highSym initMin initMax = foldr go (initMin, initMax) . reverse
   where go frontBot (min, max) =
           let middle = (max - min) `preciseQuot` 2
             in case frontBot of
-              'B' -> (min + middle, max)
-              'F' -> (min, max - middle)
+              lowSym -> (min, max - middle)
+              highSym -> (min + middle, max)
               _ -> undefined
 
 main :: IO ()
