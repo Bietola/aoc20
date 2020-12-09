@@ -11,9 +11,9 @@ import Data.Function
 solve2 :: String -> Int
 solve2 input =
   let orderedIds = (sort . map seat2id . lines) input
-    in zip [(orderedIds !! 0)..] orderedIds
+    in zip [head orderedIds..] orderedIds
        & find (\(idx, id) -> idx /= id)
-       & fmap (\(idx, _) -> idx)
+       & fmap fst
        & fromJust
 
 solve1 :: String -> Int
@@ -29,11 +29,10 @@ seat2id syms =
 
 symbols2binary :: Char -> Char -> [Char] -> Int
 symbols2binary zero one = foldl go 0
-  where go acc sym =
-          case sym of
-            s | s == zero -> acc * 2
-            s | s == one  -> acc * 2 + 1
-            s -> error $ printf "Unhandled sym: %c" s
+  where go acc sym
+          | sym == zero = acc * 2
+          | sym == one  = acc * 2 + 1
+          | otherwise   = error $ printf "Unhandled sym: %c" sym
 
 main :: IO ()
 main = do
