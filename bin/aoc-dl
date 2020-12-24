@@ -1,0 +1,12 @@
+#!/bin/sh
+
+COOKIES_H="Cookie: _ga=GA1.2.1050448183.1608805437; _gid=GA1.2.1842421481.1608805437; session=53616c7465645f5f641afbfdf4f4ff346b1293e76e2042b8f0611c672de397e37704a87601ede2543339bd88b5d659ce"
+
+if [[ $# -ne 1 ]]; then
+    echo "Usage: aoc-dl DAY"
+    exit 1
+fi
+
+DAY=$1
+
+curl -s -H "$COOKIES_H" "https://adventofcode.com/2020/day/$DAY/input"
