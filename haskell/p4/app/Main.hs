@@ -12,14 +12,9 @@ import Debug.Trace
 parse =
   lines >>>
   splitWhen (== "") >>>
-  map
-    (M.fromList .
-     map (intoTuple . splitWhen (== ':')) . traceShowId . words . unwords)
+  map (M.fromList . map (intoTuple . splitWhen (== ':')) . words . unwords)
   where
-    intoTuple =
-      \case
-        [x, y] -> (x, y)
-        x -> traceShow x undefined
+    intoTuple = \[x, y] -> (x, y)
 
 main :: IO ()
 main = do
